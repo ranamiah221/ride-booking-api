@@ -11,11 +11,20 @@ async function bootstrap() {
 
  // Swagger setup
   const config = new DocumentBuilder()
+
     .setTitle('Ride Booking API')
     .setDescription('API documentation for Ride Booking System (NestJS + Prisma)')
     .setVersion('1.0')
-    .addBearerAuth() // JWT auth
+    .addBearerAuth(
+      {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+      "JWT-auth",
+    )
     .build();
+
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);

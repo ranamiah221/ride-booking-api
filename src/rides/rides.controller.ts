@@ -5,9 +5,11 @@ import { RolesGuard } from 'src/common/roles.guards';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { Roles } from 'src/common/roles.decorators';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags("Rides")
 @UseGuards(AuthGuard('jwt'), RolesGuard)
+@ApiBearerAuth('JWT-auth')
 @Controller('rides')
 export class RidesController {
   constructor(private ridesService: RidesService) {}
