@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '../lib/prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RidesModule } from './rides/rides.module';
@@ -7,4 +7,4 @@ import { RidesModule } from './rides/rides.module';
 @Module({
   imports: [PrismaModule, AuthModule, UsersModule, RidesModule],
 })
-export class MainModule {}
+export class MainModule { }
