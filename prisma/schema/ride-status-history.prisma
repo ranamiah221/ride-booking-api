@@ -1,0 +1,22 @@
+model RideStatusHistory {
+  id        String     @id @default(uuid())
+  rideId    String
+  ride      Ride       @relation(fields: [rideId], references: [id])
+  status    RideStatus
+  changedBy String? // user id
+  note      String?
+
+  createdAt DateTime @default(now())
+}
+
+
+enum RideStatus {
+  REQUESTED
+  ACCEPTED
+  DRIVER_ENROUTE
+  PICKED_UP
+  IN_TRANSIT
+  COMPLETED
+  CANCELLED
+  NO_DRIVER
+}

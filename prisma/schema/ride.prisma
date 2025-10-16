@@ -1,0 +1,42 @@
+model Ride {
+  id String @id @default(uuid())
+
+  riderId String
+  rider   User   @relation("RidesAsRider", fields: [riderId], references: [id])
+
+  driverId String?
+  driver   User?   @relation("RidesAsDriver", fields: [driverId], references: [id])
+
+  pickupLocationId String
+  pickupLocation   Location @relation("PickupLocation", fields: [pickupLocationId], references: [id])
+
+  dropoffLocationId String
+  dropoffLocation   Location @relation("DropoffLocation", fields: [dropoffLocationId], references: [id])
+
+  pickupAddress  String?
+  dropoffAddress String?
+
+  requestedAt DateTime  @default(now())
+  acceptedAt  DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  status RideStatus @default(REQUESTED)
+
+  distanceMeters  Int?
+  durationSeconds Int?
+  fareTotal       Float?  @default(0.0)
+  platformFee     Float?  @default(0.0)
+  driverEarning   Float?  @default(0.0)
+  promoCode       String?
+  notes           String?
+
+  statusHistory RideStatusHistory[]
+  cancellation  RideCancellation?
+  payments      Payment[]
+  ratings       RideRating[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

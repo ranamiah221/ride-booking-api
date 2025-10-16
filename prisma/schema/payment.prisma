@@ -1,0 +1,23 @@
+model Payment {
+  id                String        @id @default(uuid())
+  rideId            String?
+  ride              Ride?         @relation(fields: [rideId], references: [id])
+  userId            String?
+  user              User?         @relation(fields: [userId], references: [id])
+  amount            Float
+  currency          String        @default("BDT")
+  status            PaymentStatus @default(PENDING)
+  providerPaymentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+

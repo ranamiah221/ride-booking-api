@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(data: { email: string; password: string; role: 'rider' | 'driver' | 'admin'; fullName?: string; phone?: string }) {
+  async createUser(data: { email: string; password: string; role: 'ADMIN' | 'RIDER' | 'DRIVER'; fullName?: string; phone?: string }) {
     const hash = await bcrypt.hash(data.password, 12);
     return this.prisma.user.create({
       data: {

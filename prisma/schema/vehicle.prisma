@@ -1,0 +1,12 @@
+model Vehicle {
+  id    String  @id @default(uuid())
+  make  String?
+  model String?
+  color String?
+  year  Int?
+  plate String? @unique
+
+  drivers Driver[]
+
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,12 @@
+model Location {
+  id        String  @id @default(uuid())
+  name      String?
+  address   String?
+  latitude  Float
+  longitude Float
+
+  ridesPickup  Ride[] @relation("PickupLocation")
+  ridesDropoff Ride[] @relation("DropoffLocation")
+
+  createdAt DateTime @default(now())
+}

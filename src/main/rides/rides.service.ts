@@ -33,7 +33,7 @@ export class RidesService {
         dropoffLocationId: dropoff.id,
         pickupAddress: dto.pickupAddress,
         dropoffAddress: dto.dropoffAddress,
-        status: 'requested',
+        status: 'REQUESTED',
       },
     });
 
@@ -41,7 +41,7 @@ export class RidesService {
     await this.prisma.rideStatusHistory.create({
       data: {
         rideId: ride.id,
-        status: 'requested',
+        status: 'REQUESTED',
         note: 'Ride requested by rider',
         changedBy: riderId,
       },
@@ -56,13 +56,13 @@ export class RidesService {
     if (ride.riderId !== riderId) throw new ForbiddenException('Not your ride');
 
     // Allow cancellation only in requested or accepted within short window — simplified: allow when not completed
-    if (ride.status === 'completed' || ride.status === 'cancelled') {
+    if (ride.status === 'COMPLETED' || ride.status === 'CANCELLED') {
       throw new BadRequestException('Cannot cancel ride at this stage');
     }
 
     const updated = await this.prisma.ride.update({
       where: { id: rideId },
-      data: { status: 'cancelled', cancelledAt: new Date() },
+      data: { status: 'CANCELLED', cancelledAt: new Date() },
     });
 
     await this.prisma.rideCancellation.create({
@@ -77,7 +77,7 @@ export class RidesService {
     await this.prisma.rideStatusHistory.create({
       data: {
         rideId,
-        status: 'cancelled',
+        status: 'CANCELLED',
         changedBy: riderId,
         note: 'Cancelled by rider',
       },
@@ -90,13 +90,13 @@ export class RidesService {
     // fetch driver state
     const driver = await this.prisma.driver.findUnique({ where: { userId: driverId } });
     if (!driver) throw new NotFoundException('Driver profile not found');
-    if (driver.approvalStatus !== 'approved') throw new ForbiddenException('Driver not approved');
+    if (driver.approvalStatus !== 'APPROVED') throw new ForbiddenException('Driver not approved');
     if (driver.onRide) throw new ForbiddenException('Driver currently on another ride');
 
     // attempt to assign if requested
     const ride = await this.prisma.ride.findUnique({ where: { id: rideId } });
     if (!ride) throw new NotFoundException('Ride not found');
-    if (ride.status !== 'requested') throw new BadRequestException('Ride not available for accept');
+    if (ride.status !== 'REQUESTED') throw new BadRequestException('Ride not available for accept');
 
     // transaction: set ride driver, set acceptedAt, set driver.onRide
     const updated = await this.prisma.$transaction(async (tx) => {
@@ -104,7 +104,7 @@ export class RidesService {
         where: { id: rideId },
         data: {
           driverId,
-          status: 'accepted',
+          status: 'ACCEPTED',
           acceptedAt: new Date(),
         },
       });
@@ -117,7 +117,7 @@ export class RidesService {
       await tx.rideStatusHistory.create({
         data: {
           rideId,
-          status: 'accepted',
+          status: 'ACCEPTED',
           changedBy: driverId,
           note: 'Driver accepted the ride',
         },

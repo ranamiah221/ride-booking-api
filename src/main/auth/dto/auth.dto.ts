@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength, IsIn, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserRole } from '@prisma/client';
 
 export class RegisterDto {
   @ApiProperty({
@@ -34,12 +35,12 @@ export class RegisterDto {
   phone?: string;
 
   @ApiProperty({
-    example: 'rider',
+    example: UserRole.RIDER,
     description: 'Role of the user (admin should be created manually)',
-    enum: ['rider', 'driver'],
+    enum: [UserRole],
   })
-  @IsIn(['rider', 'driver'])
-  role: 'rider' | 'driver';
+  @IsIn([UserRole.RIDER, UserRole.DRIVER])
+  role: UserRole;
 }
 
 export class LoginDto {
