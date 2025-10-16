@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../lib/prisma/prisma.service';
 import { CreateRideDto } from './dto/create-ride.dto';
 
 @Injectable()
 export class RidesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   // create locations and ride
   async requestRide(riderId: string, dto: CreateRideDto) {
@@ -187,8 +187,21 @@ export class RidesService {
     });
   }
 
-  async getRide(rideId: string) {
-    return this.prisma.ride.findUnique({ where: { id: rideId } });
+  async getRide(userId: string, rideId: string) {
+    const ride = await this.prisma.ride.findFirst({
+      where: {
+        id: rideId,
+        OR: [
+          { riderId: userId },
+          { driverId: userId }
+        ],
+      },
+    });
+
+    if (!ride) {
+      throw new NotFoundException('Ride not found or access denied');
+    }
+
+    return ride;
   }
-  
 }

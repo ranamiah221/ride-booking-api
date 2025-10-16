@@ -4,12 +4,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateStatusDto {
   @ApiProperty({
-    example: 'accepted',
+    example: RideStatus.ACCEPTED,
     description: 'New status of the ride',
-    enum: ['accepted', 'driver_enroute', 'picked_up', 'in_transit', 'completed', 'cancelled'],
+    enum: [RideStatus],
   })
   @IsNotEmpty()
-  @IsIn(['accepted','driver_enroute','picked_up','in_transit','completed','cancelled'])
+  @IsIn([RideStatus])
   status: RideStatus;
 }
 
