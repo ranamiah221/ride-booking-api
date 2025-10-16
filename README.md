@@ -7,7 +7,7 @@ The Ride Booking Backend is a scalable and secure NestJS application built to ma
 It’s designed using Prisma ORM with PostgreSQL for efficient data modeling and supports JWT-based authentication, role-based access control, and email OTP verification for secure user onboarding.
 
 ## Live URL & Swagger API Docs
-👉 
+👉 https://ride-booking-api-s3qz.onrender.com/docs
 
 ##  Database ERD
 
