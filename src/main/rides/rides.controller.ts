@@ -6,6 +6,8 @@ import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { Roles } from 'src/common/roles.decorators';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserRole } from '@prisma/client';
+import { GetUser } from 'src/common/get.user.decorators';
 
 @ApiTags("Rides")
 @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -16,9 +18,9 @@ export class RidesController {
 
   // Rider requests a ride
   @Post()
-  @Roles('rider')
-  async requestRide(@Request() req: any, @Body() dto: CreateRideDto) {
-    return this.ridesService.requestRide(req.user.userId, dto);
+  @Roles(UserRole.RIDER)
+  async requestRide(@GetUser('id') userId: string, @Body() dto: CreateRideDto) {
+    return this.ridesService.requestRide(userId, dto);
   }
 
   // Rider cancels
