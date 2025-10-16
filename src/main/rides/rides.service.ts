@@ -189,4 +189,5 @@ export class RidesService {
   async getRide(rideId: string) {
     return this.prisma.ride.findUnique({ where: { id: rideId } });
   }
+  
 }

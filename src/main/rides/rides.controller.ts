@@ -54,7 +54,7 @@ export class RidesController {
   @Roles('driver')
   async driverHistory(@Request() req: any) {
     return this.ridesService.driverHistory(req.user.userId);
-  }
+  } 
 
   // Get ride detail (rider or driver)
   @Get(':id')
