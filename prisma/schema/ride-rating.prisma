@@ -1,0 +1,13 @@
+model RideRating {
+  id          String  @id @default(uuid())
+  rideId      String
+  ride        Ride    @relation(fields: [rideId], references: [id])
+  raterId     String
+  rater       User    @relation("RatingsGiven", fields: [raterId], references: [id])
+  ratedUserId String
+  ratedUser   User    @relation("RatingsReceived", fields: [ratedUserId], references: [id])
+  rating      Int
+  comment     String?
+
+  createdAt DateTime @default(now())
+}

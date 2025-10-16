@@ -1,0 +1,10 @@
+model AdminAction {
+  id           String  @id @default(uuid())
+  adminId      String
+  admin        User    @relation(fields: [adminId], references: [id])
+  targetUserId String?
+  action       String
+  details      Json?
+
+  createdAt DateTime @default(now())
+}

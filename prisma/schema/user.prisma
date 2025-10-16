@@ -1,0 +1,32 @@
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String?
+  phone        String?  @unique
+  role         UserRole @default(RIDER)
+  isBlocked    Boolean  @default(false)
+
+  riderProfile  Rider?
+  driverProfile Driver?
+
+  ridesAsRider  Ride[]       @relation("RidesAsRider")
+  ridesAsDriver Ride[]       @relation("RidesAsDriver")
+  ratingsGiven  RideRating[] @relation("RatingsGiven")
+  ratingsGot    RideRating[] @relation("RatingsReceived")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  AdminAction AdminAction[]
+
+  DriverLocationUpdate DriverLocationUpdate[]
+
+  Payment Payment[]
+}
+
+enum UserRole {
+  ADMIN
+  RIDER
+  DRIVER
+}

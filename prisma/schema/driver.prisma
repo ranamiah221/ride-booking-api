@@ -1,0 +1,25 @@
+model Driver {
+  id             String         @id @default(uuid())
+  userId         String         @unique
+  user           User           @relation(fields: [userId], references: [id])
+  approvalStatus DriverApproval @default(PENDING)
+  vehicleId      String?
+  vehicle        Vehicle?       @relation(fields: [vehicleId], references: [id])
+  vehicleLicense String?
+  driverRating   Float?         @default(0.0)
+  totalEarnings  Float?         @default(0.0)
+  onRide         Boolean        @default(false)
+  online         Boolean        @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum DriverApproval {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+

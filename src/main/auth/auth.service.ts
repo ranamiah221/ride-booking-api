@@ -2,12 +2,13 @@ import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
+  constructor(private usersService: UsersService, private jwtService: JwtService) { }
 
-  async register(email: string, password: string, role: 'rider' | 'driver', fullName?: string, phone?: string) {
+  async register(email: string, password: string, role: UserRole, fullName?: string, phone?: string) {
     const existing = await this.usersService.findByEmail(email);
     if (existing) throw new BadRequestException('Email already registered');
 
@@ -20,7 +21,7 @@ export class AuthService {
     });
 
     // if driver role, create driver profile
-    if (role === 'driver') {
+    if (role === UserRole.DRIVER) {
       await this.usersService.createDriverProfile(user.id);
     } else {
       await this.usersService.createRiderProfile(user.id);

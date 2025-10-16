@@ -1,0 +1,10 @@
+model RideCancellation {
+  id          String  @id @default(uuid())
+  rideId      String  @unique
+  ride        Ride    @relation(fields: [rideId], references: [id])
+  cancelledBy String
+  reason      String?
+  refundable  Boolean @default(true)
+
+  cancelledAt DateTime @default(now())
+}

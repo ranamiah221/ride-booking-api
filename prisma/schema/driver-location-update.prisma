@@ -1,0 +1,11 @@
+model DriverLocationUpdate {
+  id        String @id @default(uuid())
+  driverId  String
+  driver    User   @relation(fields: [driverId], references: [id])
+  latitude  Float
+  longitude Float
+  heading   Float?
+  speed     Float?
+
+  updatedAt DateTime @default(now())
+}
