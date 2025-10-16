@@ -1,12 +1,13 @@
 import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateRideDto } from './dto/create-ride.dto';
 
 @Injectable()
 export class RidesService {
   constructor(private prisma: PrismaService) {}
 
   // create locations and ride
-  async requestRide(riderId: string, dto: any) {
+  async requestRide(riderId: string, dto: CreateRideDto) {
     // create pickup location
     const pickup = await this.prisma.location.create({
       data: {
